@@ -1,11 +1,13 @@
 import React, { useContext, useReducer } from "react";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
-import { IconButton, Tooltip } from "@material-ui/core";
+import { IconButton, Link, Tooltip } from "@material-ui/core";
 import { Delete, Edit } from "@material-ui/icons";
 import AgenceFormDialog from "./AgenceFormDialog";
 import { GlobalContext } from "../../contexts/GlobalState";
 import { ConfirmationDialog } from "../common/ConfirmationDialog";
+import { compteService } from "../../services/CompteService";
+import FullScreenDialog from "../common/FullScreenDialog";
 
 const initialState = {
   snackOpen: false,
@@ -96,12 +98,41 @@ export default function AgenceRow(props) {
     }
   };
 
+  const [open, setOpen] = React.useState(false);
+  const [dialogDetail, setDialogDetail] = React.useState({
+    comptes: [],
+    source: {},
+    path: "",
+  });
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleClickOpen = async (path, source, event) => {
+    event.preventDefault();
+    let comptes = (await compteService.getComptesByAgence(source.id)).data;
+
+    console.log({ source, comptes, path });
+
+    setDialogDetail({ source, comptes, path });
+    setOpen(true);
+  };
+
   return (
     <TableRow key={props.agence.id} hover>
       <TableCell component="th" scope="agence">
         {props.agence.id}
       </TableCell>
-      <TableCell align="left">{props.agence.nom}</TableCell>
+      <TableCell align="left">
+        <Tooltip title="Cliquer pour ouvrir les détails de l'agence">
+          <Link
+            onClick={(event) => handleClickOpen("agences", props.agence, event)}
+          >
+            {props.agence.nom}{" "}
+          </Link>
+        </Tooltip>
+      </TableCell>
+      {/* <TableCell align="left">{props.agence.nom}</TableCell> */}
       <TableCell align="left">{props.agence.addresse}</TableCell>
       <TableCell align="left">{props.agence.telephone}</TableCell>
       <TableCell align="center">
@@ -138,6 +169,11 @@ export default function AgenceRow(props) {
         handleClose={closeConfirmationDialog}
         actionTitle="Supprimer Agence"
         actionLabel="supprimer l'agence"
+      />
+      <FullScreenDialog
+        open={open}
+        dialogDetail={dialogDetail}
+        handleClose={handleClose}
       />
     </TableRow>
   );

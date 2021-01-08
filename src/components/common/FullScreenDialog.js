@@ -73,79 +73,95 @@ export default function FullScreenDialog({ open, handleClose, dialogDetail }) {
           </Toolbar>
         </AppBar>
         <List>
-          {dialogDetail.comptes.map((compte) => (
-            <>
-              <ListItem alignItems="flex-start">
-                {dialogDetail.path === "agences" ? (
-                  <>
-                    <ListItemAvatar>
-                      <Avatar>
-                        {`${compte.client.prenom[0]}${compte.client.nom[0]}`}
-                      </Avatar>
-                    </ListItemAvatar>
+          {dialogDetail.comptes.length === 0 ? (
+            dialogDetail.path === "agences" ? (
+              <>
+                <Typography variant="h4">
+                  Cette agence n'a aucun compte pour le moment.
+                </Typography>
+              </>
+            ) : (
+              <>
+                <Typography variant="h4">
+                  Ce client n'a aucun compte pour le moment.
+                </Typography>
+              </>
+            )
+          ) : (
+            dialogDetail.comptes.map((compte) => (
+              <>
+                <ListItem alignItems="flex-start">
+                  {dialogDetail.path === "agences" ? (
+                    <>
+                      <ListItemAvatar>
+                        <Avatar>
+                          {`${compte.client.prenom[0]}${compte.client.nom[0]}`}
+                        </Avatar>
+                      </ListItemAvatar>
 
-                    <ListItemText
-                      primary={
-                        <>
-                          <Typography variant="body1">
-                            Numéro de compte: {compte.id}
-                          </Typography>
+                      <ListItemText
+                        primary={
+                          <>
+                            <Typography variant="body1">
+                              Numéro de compte: {compte.id}
+                            </Typography>
 
-                          <Typography variant="body1">
-                            Client: {compte.client.prenom} {compte.client.nom}
-                          </Typography>
-                        </>
-                      }
-                      secondary={
-                        <>
-                          <Typography color="textSecondary" variant="body2">
-                            Solde: {compte.solde}
-                          </Typography>
+                            <Typography variant="body1">
+                              Client: {compte.client.prenom} {compte.client.nom}
+                            </Typography>
+                          </>
+                        }
+                        secondary={
+                          <>
+                            <Typography color="textSecondary" variant="body2">
+                              Solde: {compte.solde}
+                            </Typography>
 
-                          <Typography color="primary" variant="body2">
-                            Découvert: {compte.decouvert}
-                          </Typography>
-                        </>
-                      }
-                    />
-                  </>
-                ) : (
-                  <>
-                    <ListItemText
-                      primary={
-                        <>
-                          <Typography variant="body1">
-                            Agence: {compte.agence.nom}
-                          </Typography>
+                            <Typography color="primary" variant="body2">
+                              Découvert: {compte.decouvert}
+                            </Typography>
+                          </>
+                        }
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <ListItemText
+                        primary={
+                          <>
+                            <Typography variant="body1">
+                              Agence: {compte.agence.nom}
+                            </Typography>
 
-                          <Typography variant="body1">
-                            Addresse: {compte.agence.addresse}
-                          </Typography>
+                            <Typography variant="body1">
+                              Addresse: {compte.agence.addresse}
+                            </Typography>
 
-                          <Typography variant="body1">
-                            Numéro de compte: {compte.id}
-                          </Typography>
-                        </>
-                      }
-                      secondary={
-                        <>
-                          <Typography color="textSecondary" variant="body1">
-                            Solde: {compte.solde}
-                          </Typography>
+                            <Typography variant="body1">
+                              Numéro de compte: {compte.id}
+                            </Typography>
+                          </>
+                        }
+                        secondary={
+                          <>
+                            <Typography color="textSecondary" variant="body1">
+                              Solde: {compte.solde}
+                            </Typography>
 
-                          <Typography color="primary" variant="body2">
-                            Découvert: {compte.decouvert}
-                          </Typography>
-                        </>
-                      }
-                    />
-                  </>
-                )}
-              </ListItem>
+                            <Typography color="primary" variant="body2">
+                              Découvert: {compte.decouvert}
+                            </Typography>
+                          </>
+                        }
+                      />
+                    </>
+                  )}
+                </ListItem>
 
-              <Divider />
-            </>
-          ))}
+                <Divider />
+              </>
+            ))
+          )}
         </List>
       </Dialog>
     </div>

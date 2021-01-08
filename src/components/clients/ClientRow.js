@@ -1,11 +1,13 @@
 import React, { useContext, useReducer } from "react";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
-import { IconButton, Tooltip } from "@material-ui/core";
+import { IconButton, Link, Tooltip } from "@material-ui/core";
 import { Delete, Edit } from "@material-ui/icons";
 import ClientFormDialog from "./ClientFormDialog";
 import { GlobalContext } from "../../contexts/GlobalState";
 import { ConfirmationDialog } from "../common/ConfirmationDialog";
+import { compteService } from "../../services/CompteService";
+import FullScreenDialog from "../common/FullScreenDialog";
 
 const initialState = {
   clientDialogOpen: false,
@@ -94,14 +96,57 @@ export default function ClientRow(props) {
     }
   };
 
+  const [open, setOpen] = React.useState(false);
+  const [dialogDetail, setDialogDetail] = React.useState({
+    comptes: [],
+    source: {},
+    path: "",
+  });
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleClickOpen = async (path, source, event) => {
+    event.preventDefault();
+    let comptes = (await compteService.getComptesByClient(source.id)).data;
+
+    console.log({ source, comptes, path });
+
+    setDialogDetail({ source, comptes, path });
+    setOpen(true);
+  };
+
   return (
     <>
       <TableRow key={props.client.id} hover>
         <TableCell component="th" scope="client">
           {props.client.id}
         </TableCell>
-        <TableCell align="left">{props.client.prenom}</TableCell>
-        <TableCell align="left">{props.client.nom}</TableCell>
+        <TableCell align="left">
+          <Tooltip title="Cliquer pour ouvrir les détails du client">
+            <Link
+              onClick={(event) =>
+                handleClickOpen("clients", props.client, event)
+              }
+            >
+              {props.client.prenom}{" "}
+            </Link>
+          </Tooltip>
+        </TableCell>
+
+        <TableCell align="left">
+          <Tooltip title="Cliquer pour ouvrir les détails du client">
+            <Link
+              onClick={(event) =>
+                handleClickOpen("clients", props.client, event)
+              }
+            >
+              {props.client.nom}{" "}
+            </Link>
+          </Tooltip>
+        </TableCell>
+        {/* <TableCell align="left">{props.client.prenom}</TableCell>
+        <TableCell align="left">{props.client.nom}</TableCell> */}
 
         <TableCell align="left">{props.client.dateNaissance}</TableCell>
         <TableCell align="center">
@@ -138,6 +183,11 @@ export default function ClientRow(props) {
           handleClose={closeConfirmationDialog}
           actionTitle="Supprimer Client"
           actionLabel="supprimer le client"
+        />
+        <FullScreenDialog
+          open={open}
+          dialogDetail={dialogDetail}
+          handleClose={handleClose}
         />
       </TableRow>
     </>
