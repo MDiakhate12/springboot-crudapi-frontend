@@ -1,7 +1,7 @@
 import React, { useContext, useReducer } from "react";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
-import { IconButton } from "@material-ui/core";
+import { IconButton, Tooltip } from "@material-ui/core";
 import { Delete, Edit } from "@material-ui/icons";
 import ClientFormDialog from "./ClientFormDialog";
 import { GlobalContext } from "../../contexts/GlobalState";
@@ -50,7 +50,9 @@ const reducer = (state, action) => {
 
 export default function ClientRow(props) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { updateClient, deleteClient, openSnackbar } = useContext(GlobalContext);
+  const { updateClient, deleteClient, openSnackbar } = useContext(
+    GlobalContext
+  );
 
   const openClientDialog = () =>
     dispatch({
@@ -65,7 +67,7 @@ export default function ClientRow(props) {
       console.log(client);
       dispatch({ type: "CLIENT_DIALOG_CLOSE", payload: client });
       updateClient(client);
-      openSnackbar("Client modifié avecs succés!", "info")
+      openSnackbar("Client modifié avecs succés!", "info");
     } else {
       dispatch({ type: "CLIENT_DIALOG_CLOSE" });
     }
@@ -94,46 +96,50 @@ export default function ClientRow(props) {
 
   return (
     <>
-    <TableRow key={props.client.id} hover>
-      <TableCell component="th" scope="client">
-        {props.client.id}
-      </TableCell>
-      <TableCell align="left">{props.client.prenom}</TableCell>
-      <TableCell align="left">{props.client.nom}</TableCell>
+      <TableRow key={props.client.id} hover>
+        <TableCell component="th" scope="client">
+          {props.client.id}
+        </TableCell>
+        <TableCell align="left">{props.client.prenom}</TableCell>
+        <TableCell align="left">{props.client.nom}</TableCell>
 
-      <TableCell align="left">{props.client.dateNaissance}</TableCell>
-      <TableCell align="center">
-        <IconButton
-          variant="outlined"
-          color="secondary"
-          onClick={openClientDialog}
-        >
-          <Edit />
-        </IconButton>
-      </TableCell>
-      <TableCell align="center">
-        <IconButton
-          variant="outlined"
-          color="primary"
-          onClick={openConfirmationDialog}
-        >
-          <Delete />
-        </IconButton>
-      </TableCell>
-      <ClientFormDialog
-        open={state.clientDialogOpen}
-        client={props.client}
-        handleClose={closeClientDialog}
-        currentPage="Modifier Client"
-      />
-      <ConfirmationDialog
-        open={state.confirmationDialogOpen}
-        handleClickOpen={openConfirmationDialog}
-        handleClose={closeConfirmationDialog}
-        actionTitle="Supprimer Client"
-        actionLabel="supprimer le client"
-      />
-    </TableRow>
+        <TableCell align="left">{props.client.dateNaissance}</TableCell>
+        <TableCell align="center">
+          <Tooltip title="Modifier">
+            <IconButton
+              variant="outlined"
+              color="secondary"
+              onClick={openClientDialog}
+            >
+              <Edit />
+            </IconButton>
+          </Tooltip>
+        </TableCell>
+        <TableCell align="center">
+          <Tooltip title="Supprimer">
+            <IconButton
+              variant="outlined"
+              color="primary"
+              onClick={openConfirmationDialog}
+            >
+              <Delete />
+            </IconButton>
+          </Tooltip>
+        </TableCell>
+        <ClientFormDialog
+          open={state.clientDialogOpen}
+          client={props.client}
+          handleClose={closeClientDialog}
+          currentPage="Modifier Client"
+        />
+        <ConfirmationDialog
+          open={state.confirmationDialogOpen}
+          handleClickOpen={openConfirmationDialog}
+          handleClose={closeConfirmationDialog}
+          actionTitle="Supprimer Client"
+          actionLabel="supprimer le client"
+        />
+      </TableRow>
     </>
   );
 }

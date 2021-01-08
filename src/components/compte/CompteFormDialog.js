@@ -5,7 +5,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { InputAdornment, makeStyles, useMediaQuery, useTheme } from "@material-ui/core";
+import { InputAdornment, makeStyles } from "@material-ui/core";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
@@ -19,23 +19,30 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function CompteFormDialog(props) {
-  const classes = useStyles();
-
   const { agences, clients } = useContext(GlobalContext);
+  const [compte, setCompte] = useState({});
 
-  const [compte, setCompte] = useState(
-    props.compte || {
-      solde: 0,
-      decouvert: 0,
-      agence: agences[0],
-      client: clients[0],
+  useEffect(() => {
+    if (props.compte !== undefined) {
+      setCompte({ id: props.compte.id, ...compte });
     }
-  );
+    if (props.currentPage.search("Modifier") > 0) {
+      console.log("FROM DIALOG MODIFIER", compte);
+    }
+  }, []);
 
   return (
     <Dialog
       open={props.open}
-      onClose={(event, reason) => props.handleClose(event, reason, compte)}
+      onClose={(event, reason) => {
+        props.handleClose(
+          event,
+          reason,
+          compte.agence.id,
+          compte.client.id,
+          compte
+        );
+      }}
       aria-labelledby="form-dialog-title"
     >
       <DialogTitle id="form-dialog-title">{props.currentPage}</DialogTitle>
@@ -46,22 +53,22 @@ export default function CompteFormDialog(props) {
           id="solde"
           label="Solde"
           type="number"
-          value={compte.solde}
+          value={compte?.solde || ""}
           onChange={(e) => setCompte({ ...compte, solde: e.target.value })}
           color="secondary"
           fullWidth
-          endAdornment={<InputAdornment position="end">XOF</InputAdornment>}
         />
         <TextField
           required
           id="decouvert"
           label="Découvert"
           type="number"
-          value={compte.decouvert}
-          onChange={(e) => setCompte({ ...compte, decouvert: e.target.value })}
+          value={compte?.decouvert || ""}
+          onChange={(e) => {
+            setCompte({ ...compte, decouvert: e.target.value });
+          }}
           fullWidth
           color="secondary"
-          endAdornment={<InputAdornment position="end">XOF</InputAdornment>}
         />
 
         <FormControl fullWidth>
@@ -70,10 +77,11 @@ export default function CompteFormDialog(props) {
             fullWidth
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={compte.agence}
-            onChange={(e) => {
-              setCompte({ ...compte, agence: e.target.value });
-              console.log(compte);
+            value={compte?.agence || ""}
+            onChange={async (e) => {
+              await setCompte({ ...compte, agence: e.target.value });
+              // console.log(props.compte);
+              // console.log(compte);
               // console.log(e.target.value);
             }}
           >
@@ -91,10 +99,11 @@ export default function CompteFormDialog(props) {
             fullWidth
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={compte.client}
+            value={compte?.client || ""}
             onChange={(e) => {
               setCompte({ ...compte, client: e.target.value });
               console.log(compte);
+              console.log(props.compte);
               // console.log(e.target.value);
             }}
           >
@@ -118,6 +127,9 @@ export default function CompteFormDialog(props) {
             if (compte.solde === "" || compte.decouvert === "") {
               return;
             }
+
+            console.log("FROM DIALOG CLICK", compte);
+
             props.handleClose(
               event,
               reason,

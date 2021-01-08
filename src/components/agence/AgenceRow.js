@@ -1,7 +1,7 @@
 import React, { useContext, useReducer } from "react";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
-import { IconButton } from "@material-ui/core";
+import { IconButton, Tooltip } from "@material-ui/core";
 import { Delete, Edit } from "@material-ui/icons";
 import AgenceFormDialog from "./AgenceFormDialog";
 import { GlobalContext } from "../../contexts/GlobalState";
@@ -52,7 +52,9 @@ const reducer = (state, action) => {
 
 export default function AgenceRow(props) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { updateAgence, deleteAgence, openSnackbar } = useContext(GlobalContext);
+  const { updateAgence, deleteAgence, openSnackbar } = useContext(
+    GlobalContext
+  );
 
   const openAgenceDialog = () =>
     dispatch({
@@ -103,22 +105,26 @@ export default function AgenceRow(props) {
       <TableCell align="left">{props.agence.addresse}</TableCell>
       <TableCell align="left">{props.agence.telephone}</TableCell>
       <TableCell align="center">
-        <IconButton
-          variant="outlined"
-          color="secondary"
-          onClick={openAgenceDialog}
-        >
-          <Edit />
-        </IconButton>
+        <Tooltip title="Modifier">
+          <IconButton
+            variant="outlined"
+            color="secondary"
+            onClick={openAgenceDialog}
+          >
+            <Edit />
+          </IconButton>
+        </Tooltip>
       </TableCell>
       <TableCell align="center">
-        <IconButton
-          variant="outlined"
-          color="primary"
-          onClick={openConfirmationDialog}
-        >
-          <Delete />
-        </IconButton>
+        <Tooltip title="Supprimer">
+          <IconButton
+            variant="outlined"
+            color="primary"
+            onClick={openConfirmationDialog}
+          >
+            <Delete />
+          </IconButton>
+        </Tooltip>
       </TableCell>
       <AgenceFormDialog
         open={state.agenceDialogOpen}
