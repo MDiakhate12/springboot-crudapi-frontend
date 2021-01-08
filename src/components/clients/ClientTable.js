@@ -21,6 +21,10 @@ const useStyles = makeStyles((theme) => ({
         ? theme.palette.primary.main
         : theme.palette.primary.light,
   },
+  tableContainer: {
+    marginBottom: 65
+  }
+
 }));
 
 export default function ClientTable() {
@@ -29,26 +33,6 @@ export default function ClientTable() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  // const handleConfirmationDialogClickOpen = (id) => {
-  //   setConfirmationDialogOpen(true);
-  //   setIdToDelete(id);
-  // };
-  // const handleConfirmationDialogClose = (event, reason) => {
-  //   setConfirmationDialogOpen(false);
-
-  //   let feedback = event.target.innerText;
-
-  //   if (feedback.toLowerCase() === "oui") {
-  //     setClients(clients.filter((client) => client.id !== idToDelete));
-  //     ClientService
-  //       .remove(idToDelete)
-  //       .then((response) => {
-  //         console.log(response);
-  //         setSnackOpen(true);
-  //       })
-  //       .catch((error) => console.error(error));
-  //   }
-  // };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -62,8 +46,8 @@ export default function ClientTable() {
   const { clients } = useContext(GlobalContext);
 
   return (
-    <TableContainer component={Paper} elevation={4}>
-      <Table className={classes.table} aria-label="simple table">
+    <TableContainer className={classes.tableContainer} component={Paper} elevation={4}>
+      <Table className={classes.table} aria-label="simple table" size="small">
         <TableHead className={classes.head}>
           <TableRow>
             <TableCell>#ID</TableCell>

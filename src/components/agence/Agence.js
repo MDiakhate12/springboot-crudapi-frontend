@@ -35,11 +35,11 @@ function Agence() {
       <Grid container justify="center">
         <Grid item xs={7} className={classes.addButton}>
           <Button
-            size="large"
             variant="contained"
             color="primary"
             startIcon={<AddCircle />}
             onClick={() => setAgenceDialogOpen(true)}
+            size="small"
           >
             Ajouter Agence
           </Button>

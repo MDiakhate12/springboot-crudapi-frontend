@@ -155,6 +155,7 @@ export default function ClientRow(props) {
               variant="outlined"
               color="secondary"
               onClick={openClientDialog}
+              size="small"
             >
               <Edit />
             </IconButton>
@@ -166,6 +167,7 @@ export default function ClientRow(props) {
               variant="outlined"
               color="primary"
               onClick={openConfirmationDialog}
+              size="small"
             >
               <Delete />
             </IconButton>

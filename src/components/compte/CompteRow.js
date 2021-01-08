@@ -162,6 +162,7 @@ export default function CompteRow(props) {
               variant="outlined"
               color="secondary"
               onClick={openCompteDialog}
+              size="small"
             >
               <Edit />
             </IconButton>
@@ -173,6 +174,7 @@ export default function CompteRow(props) {
               variant="outlined"
               color="primary"
               onClick={openConfirmationDialog}
+              size="small"
             >
               <Delete />
             </IconButton>

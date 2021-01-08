@@ -32,11 +32,11 @@ function Compte() {
       <Grid container justify="center">
         <Grid item xs={7} className={classes.addButtonGrid}>
           <Button
-            size="large"
             variant="contained"
             color="primary"
             startIcon={<AddCircle />}
             onClick={() => setCompteDialogOpen(true)}
+            size="small"
             // className={classes.addButton}
           >
             Ajouter Compte

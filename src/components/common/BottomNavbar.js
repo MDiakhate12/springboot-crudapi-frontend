@@ -12,15 +12,16 @@ import { pink } from "@material-ui/core/colors";
 import { GlobalContext } from "../../contexts/GlobalState";
 
 const useStyles = makeStyles((theme) => ({
-  bottomNavRoot: {
-    position: "absolute",
-    bottom: "0px",
-    width: "100%",
-    backgroundColor: pink,
-  },
   link: {
     textDecoration: "none",
     color: theme.palette.text.primary,
+  },
+
+  root: {
+    position: "fixed",
+    bottom: 0,
+    width: "100%",
+    backgroundColor: pink,
   },
 }));
 
@@ -44,7 +45,7 @@ function BottomNavbar(props) {
       case "/comptes":
         setValue(2);
         break;
-        
+
       default:
         break;
     }
@@ -58,7 +59,7 @@ function BottomNavbar(props) {
         setValue(newValue);
       }}
       showLabels
-      className={classes.bottomNavRoot}
+      className={classes.root}
     >
       <BottomNavigationAction
         component={Link}

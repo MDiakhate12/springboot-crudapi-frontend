@@ -141,6 +141,7 @@ export default function AgenceRow(props) {
             variant="outlined"
             color="secondary"
             onClick={openAgenceDialog}
+            size="small"
           >
             <Edit />
           </IconButton>
@@ -152,6 +153,7 @@ export default function AgenceRow(props) {
             variant="outlined"
             color="primary"
             onClick={openConfirmationDialog}
+            size="small"
           >
             <Delete />
           </IconButton>

@@ -14,7 +14,6 @@ import Navbar from "./components/common/Navbar";
 import BottomNavbar from "./components/common/BottomNavbar";
 import Compte from "./components/compte/Compte";
 
-
 const useStyles = makeStyles((theme) => ({
   toolbar: {
     display: "flex",
@@ -27,14 +26,8 @@ const useStyles = makeStyles((theme) => ({
     // ...theme.mixins.toolbar,
   },
   content: {
-    flexGrow: 1,
+    // flexGrow: 1,
     // padding: theme.spacing(1),
-  },
-  bottomNavRoot: {
-    position: "absolute",
-    bottom: "0px",
-    width: "100%",
-    backgroundColor: pink,
   },
   link: {
     textDecoration: "none",
@@ -46,6 +39,10 @@ export default function App() {
   const classes = useStyles();
   const [darkMode, setDarkMode] = useState(true);
   const theme = createMuiTheme({
+    typography: {
+      fontFamily: "Roboto",
+      fontSize: "12"
+    },
     palette: {
       primary: {
         main: pink[500],
@@ -76,7 +73,7 @@ export default function App() {
             <Switch>
               <Route path="/agences" component={Agence} />
               <Route path="/clients" component={Client} />
-              <Route path="/comptes" component={Compte}/>
+              <Route path="/comptes" component={Compte} />
               <Route exact path="/">
                 <Redirect to="/agences" />
               </Route>

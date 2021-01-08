@@ -21,6 +21,9 @@ const useStyles = makeStyles((theme) => ({
         ? theme.palette.primary.main
         : theme.palette.primary.light,
   },
+  tableContainer: {
+    marginBottom: 65
+  }
 }));
 
 export default function CompteTable() {
@@ -41,8 +44,8 @@ export default function CompteTable() {
   const { comptes } = useContext(GlobalContext);
 
   return (
-    <TableContainer component={Paper} elevation={4}>
-      <Table className={classes.table} aria-label="simple table">
+    <TableContainer className={classes.tableContainer} component={Paper} elevation={4}>
+      <Table className={classes.table} aria-label="simple table" size="small">
         <TableHead className={classes.head}>
           <TableRow>
             <TableCell>#ID</TableCell>
