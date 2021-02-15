@@ -5,44 +5,28 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { InputAdornment, makeStyles } from "@material-ui/core";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
+import { ClientContext } from "../../contexts/ClientState";
+import { AgenceContext } from "../../contexts/AgenceState";
 import { GlobalContext } from "../../contexts/GlobalState";
 
-const useStyles = makeStyles((theme) => ({
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-}));
-
 export default function CompteFormDialog(props) {
-  const { agences, clients } = useContext(GlobalContext);
-  const [compte, setCompte] = useState({});
+  const { clients } = useContext(ClientContext);
+  const { agences } = useContext(AgenceContext);
 
-  useEffect(() => {
-    if (props.compte !== undefined) {
-      setCompte({ id: props.compte.id, ...compte });
-    }
-    if (props.currentPage.search("Modifier") > 0) {
-      console.log("FROM DIALOG MODIFIER", compte);
-    }
-  }, []);
+  const { compteDialog, openCompteDialog, closeCompteDialog } = useContext(
+    GlobalContext
+  );
+
+  const [compte, setCompte] = useState();
 
   return (
     <Dialog
-      open={props.open}
-      onClose={(event, reason) => {
-        props.handleClose(
-          event,
-          reason,
-          compte.agence.id,
-          compte.client.id,
-          compte
-        );
-      }}
+      open={compteDialog.open}
+      onClose={closeCompteDialog}
       aria-labelledby="form-dialog-title"
     >
       <DialogTitle id="form-dialog-title">{props.currentPage}</DialogTitle>
@@ -53,7 +37,7 @@ export default function CompteFormDialog(props) {
           id="solde"
           label="Solde"
           type="number"
-          value={compte?.solde || ""}
+          value={compteDialog.compte?.solde || ""}
           onChange={(e) => setCompte({ ...compte, solde: e.target.value })}
           color="secondary"
           fullWidth
@@ -63,7 +47,7 @@ export default function CompteFormDialog(props) {
           id="decouvert"
           label="Découvert"
           type="number"
-          value={compte?.decouvert || ""}
+          value={compteDialog.compte?.decouvert || ""}
           onChange={(e) => {
             setCompte({ ...compte, decouvert: e.target.value });
           }}
@@ -77,7 +61,8 @@ export default function CompteFormDialog(props) {
             fullWidth
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={compte?.agence || ""}
+            value={compteDialog.compte?.agence?.id || ""}
+            name="select-agence"
             onChange={async (e) => {
               await setCompte({ ...compte, agence: e.target.value });
               // console.log(props.compte);
@@ -86,20 +71,21 @@ export default function CompteFormDialog(props) {
             }}
           >
             {agences.map((agence) => (
-              <MenuItem key={agence.id} value={agence}>
+              <MenuItem key={agence.id} value={agence.id}>
                 {agence.nom}
               </MenuItem>
             ))}
           </Select>
         </FormControl>
-
+        
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">Client</InputLabel>
           <Select
             fullWidth
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={compte?.client || ""}
+            value={compteDialog.compte?.client?.id || ""}
+            name="select-client"
             onChange={(e) => {
               setCompte({ ...compte, client: e.target.value });
               console.log(compte);
@@ -108,7 +94,7 @@ export default function CompteFormDialog(props) {
             }}
           >
             {clients.map((client) => (
-              <MenuItem key={client.id} value={client}>
+              <MenuItem key={client.id} value={client.id}>
                 {`${client.prenom} ${client.nom}`}
               </MenuItem>
             ))}{" "}
@@ -116,10 +102,7 @@ export default function CompteFormDialog(props) {
         </FormControl>
       </DialogContent>
       <DialogActions>
-        <Button
-          onClick={(event, reason) => props.handleClose(event, reason, compte)}
-          color="primary"
-        >
+        <Button onClick={closeCompteDialog} color="primary">
           Annuler
         </Button>
         <Button
@@ -129,14 +112,6 @@ export default function CompteFormDialog(props) {
             }
 
             console.log("FROM DIALOG CLICK", compte);
-
-            props.handleClose(
-              event,
-              reason,
-              compte.agence.id,
-              compte.client.id,
-              compte
-            );
           }}
           color="secondary"
         >

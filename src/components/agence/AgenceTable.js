@@ -9,7 +9,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { TablePagination } from "@material-ui/core";
 import AgenceRow from "./AgenceRow";
-import { GlobalContext } from "../../contexts/GlobalState";
+import { AgenceContext } from "../../contexts/AgenceState";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -41,7 +41,7 @@ export default function AgenceTable(props) {
     setPage(0);
   };
 
-  const { agences } = useContext(GlobalContext);
+  const { agences } = useContext(AgenceContext);
 
   return (
     <TableContainer className={classes.tableContainer} component={Paper} elevation={4}>

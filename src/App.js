@@ -1,11 +1,11 @@
 // //MC+YIiP2NyRTz5JmJufkiPyx5ucF5j/H
 
-import React, { useContext } from "react";
+import { React } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { createMuiTheme, CssBaseline, ThemeProvider } from "@material-ui/core";
 import { indigo, pink } from "@material-ui/core/colors";
-import GlobalProvider, { GlobalContext } from "./contexts/GlobalState";
+import GlobalProvider from "./contexts/GlobalState";
 import { useState } from "react";
 import Client from "./components/clients/Client";
 import Agence from "./components/agence/Agence";
@@ -13,6 +13,9 @@ import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import Navbar from "./components/common/Navbar";
 import BottomNavbar from "./components/common/BottomNavbar";
 import Compte from "./components/compte/Compte";
+import AgenceProvider from "./contexts/AgenceState";
+import ClientProvider from "./contexts/ClientState";
+import CompteProvider from "./contexts/CompteState";
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -41,7 +44,7 @@ export default function App() {
   const theme = createMuiTheme({
     typography: {
       fontFamily: "Roboto",
-      fontSize: "12"
+      fontSize: "12",
     },
     palette: {
       primary: {
@@ -71,15 +74,41 @@ export default function App() {
           <main className={classes.content}>
             <div className={classes.toolbar} />
             <Switch>
-              <Route path="/agences" component={Agence} />
-              <Route path="/clients" component={Client} />
-              <Route path="/comptes" component={Compte} />
+              <Route
+                path="/agences"
+                render={() => (
+                  <AgenceProvider>
+                    <Agence />
+                  </AgenceProvider>
+                )}
+              />
+
+              <Route
+                path="/clients"
+                render={() => (
+                  <ClientProvider>
+                    <Client />
+                  </ClientProvider>
+                )}
+              />
+
+              <Route
+                path="/comptes"
+                render={() => (
+                  <CompteProvider>
+                    <AgenceProvider>
+                      <ClientProvider>
+                        <Compte />
+                      </ClientProvider>
+                    </AgenceProvider>
+                  </CompteProvider>
+                )}
+              />
+
               <Route exact path="/">
                 <Redirect to="/agences" />
               </Route>
             </Switch>
-            {/* <Agence /> */}
-            {/* <Client /> */}
           </main>
           <BottomNavbar />
         </BrowserRouter>

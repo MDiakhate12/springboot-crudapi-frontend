@@ -8,6 +8,7 @@ import { GlobalContext } from "../../contexts/GlobalState";
 import { ConfirmationDialog } from "../common/ConfirmationDialog";
 import { compteService } from "../../services/CompteService";
 import FullScreenDialog from "../common/FullScreenDialog";
+import { AgenceContext } from "../../contexts/AgenceState";
 
 const initialState = {
   snackOpen: false,
@@ -54,9 +55,10 @@ const reducer = (state, action) => {
 
 export default function AgenceRow(props) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { updateAgence, deleteAgence, openSnackbar } = useContext(
-    GlobalContext
-  );
+  
+  const { updateAgence, deleteAgence } = useContext(AgenceContext);
+
+  const { openSnackbar } = useContext(GlobalContext);
 
   const openAgenceDialog = () =>
     dispatch({

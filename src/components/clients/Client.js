@@ -5,6 +5,7 @@ import { AddCircle } from "@material-ui/icons";
 import { Button, Grid, makeStyles } from "@material-ui/core";
 import { GlobalContext } from "../../contexts/GlobalState";
 import SuccessSnackbar from "../common/SuccessSnackbar";
+import { ClientContext } from "../../contexts/ClientState";
 
 const useStyles = makeStyles((theme) => ({
   addButtonGrid: {
@@ -17,9 +18,9 @@ function Client() {
 
   const [clientDialogOpen, setClientDialogOpen] = useState(false);
 
-  const { createClient, openSnackbar } = useContext(
-    GlobalContext
-  );
+  const { createClient } = useContext(ClientContext);
+
+  const { openSnackbar } = useContext(GlobalContext);
 
   const closeClientDialog = (event, reason, client) => {
     setClientDialogOpen(false);

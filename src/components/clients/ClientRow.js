@@ -8,6 +8,7 @@ import { GlobalContext } from "../../contexts/GlobalState";
 import { ConfirmationDialog } from "../common/ConfirmationDialog";
 import { compteService } from "../../services/CompteService";
 import FullScreenDialog from "../common/FullScreenDialog";
+import { ClientContext } from "../../contexts/ClientState";
 
 const initialState = {
   clientDialogOpen: false,
@@ -52,9 +53,10 @@ const reducer = (state, action) => {
 
 export default function ClientRow(props) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { updateClient, deleteClient, openSnackbar } = useContext(
-    GlobalContext
-  );
+  
+  const { updateClient, deleteClient } = useContext(ClientContext);
+
+  const { openSnackbar } = useContext(GlobalContext);
 
   const openClientDialog = () =>
     dispatch({

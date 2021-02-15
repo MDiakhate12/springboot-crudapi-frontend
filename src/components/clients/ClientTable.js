@@ -9,7 +9,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { TablePagination } from "@material-ui/core";
 import ClientRow from "./ClientRow";
-import { GlobalContext } from "../../contexts/GlobalState";
+import { ClientContext } from "../../contexts/ClientState";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -43,7 +43,7 @@ export default function ClientTable() {
     setPage(0);
   };
 
-  const { clients } = useContext(GlobalContext);
+  const { clients } = useContext(ClientContext);
 
   return (
     <TableContainer className={classes.tableContainer} component={Paper} elevation={4}>

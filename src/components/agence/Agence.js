@@ -5,6 +5,7 @@ import { AddCircle } from "@material-ui/icons";
 import { Button, Grid, makeStyles } from "@material-ui/core";
 import { GlobalContext } from "../../contexts/GlobalState";
 import SuccessSnackbar from "../common/SuccessSnackbar";
+import { AgenceContext } from "../../contexts/AgenceState";
 
 const useStyles = makeStyles((theme) => ({
   addButton: {
@@ -17,9 +18,9 @@ function Agence() {
 
   const [agenceDialogOpen, setAgenceDialogOpen] = useState(false);
 
-  const { createAgence, openSnackbar } = useContext(
-    GlobalContext
-  );
+  const { openSnackbar } = useContext(GlobalContext);
+
+  const { createAgence } = useContext(AgenceContext);
 
   const closeAgenceDialog = (event, reason, agence) => {
     console.log(agence);

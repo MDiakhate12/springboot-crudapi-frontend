@@ -5,6 +5,9 @@ import { AddCircle } from "@material-ui/icons";
 import { Button, Grid, makeStyles } from "@material-ui/core";
 import { GlobalContext } from "../../contexts/GlobalState";
 import SuccessSnackbar from "../common/SuccessSnackbar";
+import { CompteContext } from "../../contexts/CompteState";
+import { ConfirmationDialog } from "../common/ConfirmationDialog";
+import FullScreenDialog from "../common/FullScreenDialog";
 
 const useStyles = makeStyles((theme) => ({
   addButtonGrid: {
@@ -15,12 +18,11 @@ const useStyles = makeStyles((theme) => ({
 function Compte() {
   const classes = useStyles();
 
-  const [compteDialogOpen, setCompteDialogOpen] = useState(false);
 
-  const { createCompte, openSnackbar } = useContext(GlobalContext);
+  const { createCompte } = useContext(CompteContext);
+  const { compteDialog, openCompteDialog, openSnackbar } = useContext(GlobalContext);
 
   const closeCompteDialog = (event, reason, idAgence, idClient, compte) => {
-    setCompteDialogOpen(false);
     if (event.target.innerText.toLowerCase() === "enregistrer") {
       createCompte(idAgence, idClient, compte);
       openSnackbar("Compte ajouté avec succés!", "success");
@@ -35,7 +37,7 @@ function Compte() {
             variant="contained"
             color="primary"
             startIcon={<AddCircle />}
-            onClick={() => setCompteDialogOpen(true)}
+            onClick={() => openCompteDialog({})}
             size="small"
             // className={classes.addButton}
           >
@@ -49,11 +51,24 @@ function Compte() {
         </Grid>
       </Grid>
       <CompteFormDialog
-        open={compteDialogOpen}
-        handleClose={closeCompteDialog}
+        open={compteDialog.open}
+        // handleClose={closeCompteDialog}
         currentPage="Ajouter un nouveau compte"
       />
-      <SuccessSnackbar />
+      {/* <SuccessSnackbar /> */}
+
+      {/* <ConfirmationDialog
+        open={confirmationDialogOpen}
+        handleClickOpen={openConfirmationDialog}
+        handleClose={closeConfirmationDialog}
+        actionTitle="Supprimer Compte"
+        actionLabel="supprimer le compte"
+      />
+      <FullScreenDialog
+        open={open}
+        dialogDetail={dialogDetail}
+        handleClose={handleClose}
+      /> */}
     </div>
   );
 }

@@ -9,7 +9,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { TablePagination } from "@material-ui/core";
 import CompteRow from "./CompteRow";
-import { GlobalContext } from "../../contexts/GlobalState";
+import { CompteContext } from "../../contexts/CompteState";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -41,7 +41,7 @@ export default function CompteTable() {
     setPage(0);
   };
 
-  const { comptes } = useContext(GlobalContext);
+  const { comptes } = useContext(CompteContext);
 
   return (
     <TableContainer className={classes.tableContainer} component={Paper} elevation={4}>
