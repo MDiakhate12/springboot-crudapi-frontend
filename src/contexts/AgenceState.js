@@ -49,6 +49,7 @@ export default function AgenceProvider({ children }) {
   };
 
   useEffect(() => {
+    console.log(`BACKEND_BASE_URL=${process.env.BACKEND_BASE_URL}`)
     agenceService
       .getAll()
       .then((res) => {
