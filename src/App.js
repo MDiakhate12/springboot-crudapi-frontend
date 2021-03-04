@@ -67,7 +67,7 @@ export default function App() {
         <BrowserRouter>
           <CssBaseline />
           <Navbar
-            title="SUNUBANK"
+            title={`SUNUBANK - ${process.env.REACT_APP_BACKEND_URL}`}
             darkMode={darkMode}
             setDarkMode={() => setDarkMode(!darkMode)}
           />
