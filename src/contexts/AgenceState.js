@@ -3,15 +3,11 @@ import { agenceService } from "../services/AgenceService";
 import { agenceReducer } from "./AgenceReducer";
 
 
-const initialState = {
-  agences: [],
-};
-
 // Context
-export const AgenceContext = createContext(initialState);
+export const AgenceContext = createContext([]);
 
 export default function AgenceProvider({ children }) {
-  const [{ agences }, agenceDispatch] = useReducer(agenceReducer, initialState);
+  const [agences, agenceDispatch] = useReducer(agenceReducer, []);
 
   // Agences Actions
   const getAllAgences = (agences) => {
